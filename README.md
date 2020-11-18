@@ -13,12 +13,12 @@ In PGAdmin, execute in sequence:
 		+ `ecoregion_in_country`
 2.  `02_create_infrastructure.sql`, which populates the above tables;
 
-3. execute alternatively: 03(a/b/c)_create_outputs.sql
+3. execute alternatively: 03(a/b/c/d)_create_outputs.sql
 
 4. execute:
 	+ `SELECT * FROM mtz_results.country_all_inds;` (check the field ecoregion_in_country)
 	+ `SELECT * FROM mtz_results.get_country_all_inds();` -- check the field ecoregion_in_country
-	+ `SELECT * FROM mtz_results.get_country_ecoregion_stats();`
+	+ `SELECT * FROM mtz_results.get_country_ecoregions_stats();`
 
 5. discuss it together.
 
