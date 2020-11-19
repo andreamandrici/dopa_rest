@@ -13,6 +13,8 @@ In PGAdmin, execute in sequence:
 		+ `ecoregion_in_country`
 2.  `02_create_infrastructure.sql`, which populates the above tables;
 
+	(or import csv from pgadmin:  UTF8, header=YES delimiter=|  NULL-string = NULL)
+
 3. execute alternatively: 03(a/b/c/d)_create_outputs.sql
 
 4. execute:

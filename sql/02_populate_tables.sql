@@ -4,7 +4,7 @@ COPY mtz_results.country(country_id, country_name, country_iso3, country_iso2, c
 FROM
 ----------------------------------------------------------------------
 --locura --change path here
-'/home/felixwolf/gitproject/dopa_rest/sql/country.csv' --LINUX VERSION
+'/mnt/c/DEV/dopa_rest/sql/country.csv' --LINUX VERSION
 --'C:\gitproject\opa_rest\sql\country.csv' --WINSOZZ VERSION
 ----------------------------------------------------------------------
 WITH DELIMITER '|' NULL AS 'NULL'  CSV HEADER;
@@ -14,7 +14,7 @@ COPY mtz_results.ecoregion_in_country(country_id,eco_id,eco_name,source,country_
 FROM
 ----------------------------------------------------------------------
 --mazinga --change path here
-'/home/felixwolf/gitproject/dopa_rest/sql/ecoregion_in_country.csv' --LINUX VERSION
+'/mnt/c/DEV/dopa_rest/sql/country.csv' --LINUX VERSION
 --'C:\gitproject\opa_rest\sql\ecoregion_in_country.csv' --WINSOZZ VERSION
 ----------------------------------------------------------------------
 WITH DELIMITER '|' NULL AS 'NULL'  CSV HEADER;
