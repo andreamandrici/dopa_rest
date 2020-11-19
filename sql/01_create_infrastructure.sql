@@ -1,4 +1,4 @@
-DROP SCHEMA IF EXISTS mtz_results;CREATE SCHEMA mtz_results;
+DROP SCHEMA IF EXISTS mtz_results CASCADE;CREATE SCHEMA mtz_results;
 DROP TABLE IF EXISTS mtz_results.country;
 CREATE TABLE mtz_results.country
 (

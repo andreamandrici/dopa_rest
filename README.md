@@ -16,7 +16,7 @@ In PGAdmin, execute in sequence:
 3. execute alternatively: 03(a/b/c/d)_create_outputs.sql
 
 4. execute:
-	+ `SELECT * FROM mtz_results.country_all_inds;` (check the field ecoregion_in_country)
+	+ `SELECT * FROM mtz_results.country_all_inds;` --(check the field ecoregion_in_country)
 	+ `SELECT * FROM mtz_results.get_country_all_inds();` -- check the field ecoregion_in_country
 	+ `SELECT * FROM mtz_results.get_country_ecoregions_stats();`
 
