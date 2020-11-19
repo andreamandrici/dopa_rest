@@ -1,3 +1,4 @@
+TRUNCATE TABLE mtz_results.ecoregion_in_country;
 INSERT INTO mtz_results.ecoregion_in_country VALUES 
 (1, 1, 'Antarctic', 'ppow', 20030713.898809776, 410476.80726671877, 2.049, 9.433, 0.193, 37.783, 68.122, 1.396, 15.057),
 (1, 2, 'Antarctic Polar Front', 'ppow', 12030228.35011037, 46602.54870377625, 0.387, 5.665, 0.022, 4.290, 85.158, 0.330, 3.268),
