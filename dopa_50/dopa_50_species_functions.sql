@@ -441,3 +441,23 @@ GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_usetrade() TO h05ibexro;
 COMMENT ON FUNCTION dopa_50.get_dopa_species_list_usetrade()
     IS 'Shows list of EXISTING uses and trades';
 SELECT * FROM dopa_50.get_dopa_species_list_usetrade();
+----------------------------------------------------------------------------
+-- FUNCTION: dopa_50.get_dopa_species_list_stress()
+----------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS dopa_50.get_dopa_species_list_stress();
+CREATE OR REPLACE FUNCTION dopa_50.get_dopa_species_list_stress(
+	)
+    RETURNS TABLE(cl1 integer, cl2 integer, cl3 integer, code text, name text) 
+    LANGUAGE 'sql'
+AS $BODY$
+    SELECT
+        NULLIF(split_part(code, '.', 1), '')::integer AS cl1,
+        NULLIF(split_part(code, '.', 2), '')::integer AS cl2,
+        NULLIF(split_part(code, '.', 3), '')::integer AS cl3,
+        code,
+        name
+    FROM dopa_50.class_species_stress;
+$BODY$;
+GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_stress() TO h05ibexro;
+COMMENT ON FUNCTION dopa_50.get_dopa_species_list_stress()
+    IS 'Shows list of EXISTING stresses';
