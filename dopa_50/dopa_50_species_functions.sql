@@ -461,3 +461,23 @@ $BODY$;
 GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_stress() TO h05ibexro;
 COMMENT ON FUNCTION dopa_50.get_dopa_species_list_stress()
     IS 'Shows list of EXISTING stresses';
+----------------------------------------------------------------------------
+-- FUNCTION: dopa_50.get_dopa_species_list_research_needed()
+----------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS dopa_50.get_dopa_species_list_research_needed();
+CREATE OR REPLACE FUNCTION dopa_50.get_dopa_species_list_research_needed(
+	)
+    RETURNS TABLE(cl1 integer, cl2 integer, cl3 integer, code text, name text) 
+    LANGUAGE 'sql'
+AS $BODY$
+    SELECT
+        NULLIF(split_part(code, '.', 1), '')::integer AS cl1,
+        NULLIF(split_part(code, '.', 2), '')::integer AS cl2,
+        NULLIF(split_part(code, '.', 3), '')::integer AS cl3,
+        code,
+        name
+    FROM dopa_50.class_species_research_needed;
+$BODY$;
+GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_research_needed() TO h05ibexro;
+COMMENT ON FUNCTION dopa_50.get_dopa_species_list_research_needed()
+    IS 'Shows list of EXISTING research needed codes';
