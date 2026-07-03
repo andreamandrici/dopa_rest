@@ -425,3 +425,19 @@ $BODY$;
 GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_threat() TO h05ibexro;
 COMMENT ON FUNCTION dopa_50.get_dopa_species_list_threat()
     IS 'Shows list of EXISTING threats';
+----------------------------------------------------------------------------
+-- FUNCTION: dopa_50.get_dopa_species_list_usetrade()
+----------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS dopa_50.get_dopa_species_list_usetrade();
+CREATE OR REPLACE FUNCTION dopa_50.get_dopa_species_list_usetrade(
+	)
+    RETURNS TABLE(code integer, name text) 
+    LANGUAGE 'sql'
+AS $BODY$
+    SELECT code, name
+    FROM dopa_50.class_species_usetrade;
+$BODY$;
+GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_usetrade() TO h05ibexro;
+COMMENT ON FUNCTION dopa_50.get_dopa_species_list_usetrade()
+    IS 'Shows list of EXISTING uses and trades';
+SELECT * FROM dopa_50.get_dopa_species_list_usetrade();
