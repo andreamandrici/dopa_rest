@@ -219,3 +219,133 @@ Output parameters are:
 - threats text[]
 - usetrade integer[]
 ';
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: dopa_50.get_dopa_species()
+------------------------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS dopa_50.get_dopa_species(bigint);
+------------------------------------------------------------------------------------------
+-- MATERIALIZED: dopa_50.dopa_species_template
+------------------------------------------------------------------------------------------
+DROP MATERIALIZED VIEW IF EXISTS dopa_50.dopa_species_template;
+CREATE MATERIALIZED VIEW IF NOT EXISTS dopa_50.dopa_species_template
+AS
+ WITH a AS (
+         SELECT dopa_species.id_no,
+            dopa_species.class,
+            dopa_species.order_,
+            dopa_species.family,
+            dopa_species.genus,
+            dopa_species.binomial,
+            dopa_species.category,
+            dopa_species.threatened,
+            dopa_species.country_n,
+            dopa_species.endemic,
+            t.ecosystems,
+            t.habitats,
+            t.country,
+            t.stresses,
+            t.threats,
+            t.research_needed,
+            t.conservation_needed,
+            t.usetrade
+           FROM dopa_50.dopa_species,
+            LATERAL UNNEST(dopa_species.ecosystems, dopa_species.habitats, dopa_species.country, dopa_species.stresses, dopa_species.threats, dopa_species.research_needed, dopa_species.conservation_needed, dopa_species.usetrade) t(ecosystems, habitats, country, stresses, threats, research_needed, conservation_needed, usetrade)
+          WHERE dopa_species.id_no = 3746
+        )
+ SELECT a.id_no,
+    a.class,
+    a.order_,
+    a.family,
+    a.genus,
+    a.binomial,
+    a.category,
+    a.threatened,
+    a.country_n,
+    a.endemic,
+    a.ecosystems,
+    b.code AS habitat_code,
+    b.name AS habitat_name,
+    c.code AS country_code,
+    c.name AS country_name,
+    d.code AS stress_code,
+    d.name AS stress_name,
+    e.code AS threat_code,
+    e.name AS threat_name,
+    f.code AS research_needed_code,
+    f.name AS research_needed_name,
+    g.code AS conservation_needed_code,
+    g.name AS conservation_needed_name,
+    h.code AS usetrade_code,
+    h.name AS usetrade_name
+   FROM a
+     LEFT JOIN dopa_50.class_species_habitat b ON a.habitats = b.code
+     LEFT JOIN dopa_50.class_species_country c ON a.country = c.code
+     LEFT JOIN dopa_50.class_species_stress d ON a.stresses = d.code
+     LEFT JOIN dopa_50.class_species_threat e ON a.threats = e.code
+     LEFT JOIN dopa_50.class_species_research_needed f ON a.research_needed = f.code
+     LEFT JOIN dopa_50.class_species_conservation_needed g ON a.conservation_needed = g.code
+     LEFT JOIN dopa_50.class_species_usetrade h ON a.usetrade = h.code
+  ORDER BY a.ecosystems, b.code, c.code, d.code, e.code, f.code, g.code, h.code
+ LIMIT 0;
+GRANT SELECT ON TABLE dopa_50.dopa_species_template TO h05ibexro;
+---------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION dopa_50.get_dopa_species(
+	id_no bigint DEFAULT NULL::bigint)
+    RETURNS SETOF dopa_50.dopa_species_template 
+    LANGUAGE 'sql'
+AS $BODY$
+    WITH a AS (
+        SELECT
+            s.id_no, s.class, s.order_, s.family, s.genus, s.binomial,
+            s.category, s.threatened, s.country_n, s.endemic,
+            u.ecosystems, u.habitats, u.country, u.stresses,
+            u.threats, u.research_needed, u.conservation_needed, u.usetrade
+        FROM dopa_50.dopa_species s
+        LEFT JOIN LATERAL UNNEST(
+            s.ecosystems,
+            s.habitats,
+            s.country,
+            s.stresses,
+            s.threats,
+            s.research_needed,
+            s.conservation_needed,
+            s.usetrade
+        ) AS u(
+            ecosystems,
+            habitats,
+            country,
+            stresses,
+            threats,
+            research_needed,
+            conservation_needed,
+            usetrade
+        ) ON TRUE
+        WHERE s.id_no = $1          -- parametro rinominato
+    )
+    SELECT
+        a.id_no, a.class, a.order_, a.family, a.genus, a.binomial,
+        a.category, a.threatened, a.country_n, a.endemic, a.ecosystems,
+        b.code AS habitat_code, b.name AS habitat_name,
+        c.code AS country_code, c.name AS country_name,
+        d.code AS stress_code, d.name AS stress_name,
+        e.code AS threat_code, e.name AS threat_name,
+        f.code AS research_needed_code, f.name AS research_needed_name,
+        g.code AS conservation_needed_code, g.name AS conservation_needed_name,
+        h.code AS usetrade_code, h.name AS usetrade_name
+    FROM a
+    LEFT JOIN dopa_50.class_species_habitat b   ON a.habitats = b.code
+    LEFT JOIN dopa_50.class_species_country c   ON a.country  = c.code
+    LEFT JOIN dopa_50.class_species_stress d    ON a.stresses = d.code
+    LEFT JOIN dopa_50.class_species_threat e    ON a.threats  = e.code
+    LEFT JOIN dopa_50.class_species_research_needed f ON a.research_needed = f.code
+    LEFT JOIN dopa_50.class_species_conservation_needed g ON a.conservation_needed = g.code
+    LEFT JOIN dopa_50.class_species_usetrade h  ON a.usetrade = h.code
+    ORDER BY ecosystems, habitat_code, country_code, stress_code,
+             threat_code, research_needed_code, conservation_needed_code, usetrade_code;
+$BODY$;
+GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species(bigint) TO h05ibexro;
+COMMENT ON FUNCTION dopa_50.get_dopa_species(bigint)
+    IS 'Shows for a single species direct and related detailed attributes';
+
+
