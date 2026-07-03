@@ -2360,3 +2360,24 @@ END;
 $BODY$;
 GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_wdpa_lc_copernicus(integer, integer) TO h05ibexro;
 ------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------
+-- FUNCTION: dopa_50.get_dopa_country_list(text)
+----------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS dopa_50.get_dopa_country_list(text);
+CREATE OR REPLACE FUNCTION dopa_50.get_dopa_country_list(
+	search_text text DEFAULT NULL::text)
+    RETURNS TABLE(country_id integer, country_name text, iso3 text, iso2 text, status text) 
+    LANGUAGE 'sql'
+AS $BODY$
+    SELECT country_id::integer,country_name,iso3,iso2,status
+    FROM dopa_50.dopa_country_all_inds
+    WHERE search_text IS NULL
+       OR country_name ILIKE '%' || search_text || '%'
+       OR UPPER(iso2) ILIKE '%' || search_text || '%'
+       OR UPPER(iso3) ILIKE '%' || search_text || '%'
+    ORDER BY country_id;
+$BODY$;
+COMMENT ON FUNCTION dopa_50.get_dopa_country_list(text)
+    IS 'Restituisce la lista dei paesi selezionabili filtrando su country_name, iso2 o iso3.
+search_text: testo da cercare in qualsiasi campo (case-insensitive).
+Se search_text è NULL, viene restituita l''intera lista.';
