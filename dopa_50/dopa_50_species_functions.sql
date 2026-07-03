@@ -369,3 +369,24 @@ $BODY$;
 GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_habitat() TO h05ibexro;
 COMMENT ON FUNCTION dopa_50.get_dopa_species_list_habitat()
     IS 'Shows list of EXISTING habitats with classification levels derived from code';
+---------------------------------------------------------------------------------
+-- FUNCTION: dopa_50.get_dopa_species_list_conservation_needed()
+---------------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS dopa_50.get_dopa_species_list_conservation_needed();
+---------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION dopa_50.get_dopa_species_list_conservation_needed(
+	)
+    RETURNS TABLE(cl1 integer, cl2 integer, cl3 integer, code text, name text) 
+    LANGUAGE 'sql'
+AS $BODY$
+    SELECT
+        NULLIF(split_part(code, '.', 1), '')::integer AS cl1,
+        NULLIF(split_part(code, '.', 2), '')::integer AS cl2,
+        NULLIF(split_part(code, '.', 3), '')::integer AS cl3,
+        code,
+        name
+    FROM dopa_50.class_species_conservation_needed;
+$BODY$;
+GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_conservation_needed() TO h05ibexro;
+COMMENT ON FUNCTION dopa_50.get_dopa_species_list_conservation_needed()
+    IS 'Shows list of EXISTING conservation needed codes';
