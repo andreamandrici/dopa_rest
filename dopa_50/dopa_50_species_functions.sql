@@ -390,3 +390,18 @@ $BODY$;
 GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_conservation_needed() TO h05ibexro;
 COMMENT ON FUNCTION dopa_50.get_dopa_species_list_conservation_needed()
     IS 'Shows list of EXISTING conservation needed codes';
+----------------------------------------------------------------------------
+-- FUNCTION: dopa_50.get_dopa_species_list_country()
+----------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS dopa_50.get_dopa_species_list_country();
+CREATE OR REPLACE FUNCTION dopa_50.get_dopa_species_list_country(
+	)
+    RETURNS TABLE(code text, name text) 
+    LANGUAGE 'sql'
+AS $BODY$
+    SELECT code, name
+    FROM dopa_50.class_species_country;
+$BODY$;
+GRANT EXECUTE ON FUNCTION dopa_50.get_dopa_species_list_country() TO h05ibexro;
+COMMENT ON FUNCTION dopa_50.get_dopa_species_list_country()
+    IS 'Shows list of EXISTING countries';
